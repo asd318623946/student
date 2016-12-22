@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+   
+    <!-- 第一个定时任务-->
+    <bean id="jobOneJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+        	<!-- job实现类的注解 -->
+            <ref bean="jobOneJob"/>
+        </property>
+        <!-- job中执行的方法 -->
+       <property name="targetMethod">
+            <value>doJob</value>
+        </property>
+        <!-- 调用方法的参数，可以是list、map、String等 -->
+        <property name="arguments" >
+        	<value>libin</value>
+        </property>
+        
+        
+    </bean>
+
+    <!-- 启动流程 -->
+    <bean id="jobOneJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="jobOneJobDetail"/>
+        </property>
+        <!-- 定时任务的定时时间 -->
+        <property name="cronExpression">
+            <value>0/5 * * * * ?</value>
+        </property>
+    </bean>
+
+    <!-- 定时触发器的配置END -->
+
+    <!-- 调度工厂 -->
+    <bean name="startQuartz" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--第一个定时任务 -->
+                <ref bean="jobOneJobTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>
