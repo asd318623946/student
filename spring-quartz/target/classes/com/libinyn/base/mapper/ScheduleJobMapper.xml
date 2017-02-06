@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.libinyn.base.dao.ScheduleJobDao" >
+
+  <resultMap id="BaseResultMap" type="com.libinyn.base.vo.ScheduleJob" >
+    <id column="jobId" property="jobId" jdbcType="VARCHAR"/>
+    <result column="jobName" property="jobName" jdbcType="VARCHAR" />
+    <result column="jobGroup" property="jobGroup" jdbcType="VARCHAR" />
+    <result column="jobStatus" property="jobStatus" jdbcType="CHAR" />
+    <result column="cronExpression" property="cronExpression" jdbcType="VARCHAR" />
+    <result column="desc_job" property="desc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+      jobId, jobName, jobGroup, jobStatus, cronExpression, desc_job
+  </sql>
+  
+  <sql id="where_all">
+  	<if test="jobId != null and jobId != ''">
+  		and jobId = #{jobId,jdbcType=VARCHAR}
+  	</if>
+  	<if test="jobName != null and jobName != ''">
+  		and jobName = #{jobName,jdbcType=VARCHAR}
+  	</if>
+  	<if test="jobGroup != null and jobGroup != ''">
+  		and jobGroup = #{jobGroup,jdbcType=VARCHAR}
+  	</if>
+  	<if test="jobStatus != null and jobStatus != ''">
+  		and jobStatus = #{jobStatus,jdbcType=VARCHAR}
+  	</if>
+  	<if test="cronExpression != null and cronExpression != ''">
+  		and cronExpression = #{cronExpression,jdbcType=VARCHAR}
+  	</if>
+  	<if test="desc != null and desc != ''">
+  		and desc_job = #{descJob,jdbcType=VARCHAR}
+  	</if>
+  </sql>
+  
+  <insert id="createScheduleJob" keyProperty="jobId" parameterType="com.libinyn.base.vo.ScheduleJob"  useGeneratedKeys="true">
+  	<selectKey  keyProperty="jobId"  resultType="java.lang.String" 
+		order="BEFORE">
+		select replace(uuid(),'-','') from dual
+	</selectKey>
+  	 insert into quartz_job(jobId, jobName, jobGroup, jobStatus, cronExpression,desc_job)
+  	   values(
+  	     #{jobId,jdbcType=VARCHAR},
+  	     #{jobName,jdbcType=VARCHAR},
+  	     #{jobGroup,jdbcType=VARCHAR},                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+  	     #{jobStatus,jdbcType=VARCHAR},
+  	     #{cronExpression,jdbcType=VARCHAR},
+  	     #{descJob,jdbcType=VARCHAR}
+  	   )
+  </insert>
+  
+</mapper>

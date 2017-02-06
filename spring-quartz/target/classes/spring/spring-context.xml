@@ -21,6 +21,8 @@
     <context:component-scan base-package="com.libinyn.base"/>
     <aop:aspectj-autoproxy/>
     
-    <!-- <import resource="classpath:spring/spring-mybatis.xml"/> -->
-     <import resource="classpath:spring/spring-quartz.xml"/>
+    <!-- 定时任务工厂 -->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" />
+    <import resource="classpath:spring/spring-mybatis.xml"/>
+    <import resource="classpath:spring/spring-quartz.xml"/>
 </beans>
